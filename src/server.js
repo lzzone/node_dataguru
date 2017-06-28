@@ -23,9 +23,14 @@ $.init.add((done) => {
 });
 
 // 初始化MongoDB
-$.init.load(path.resolve(__dirname, 'init', 'mongodb.js'))
-    // 加载Models
+$.init.load(path.resolve(__dirname, 'init', 'mongodb.js'));
+// 加载Models
 $.init.load(path.resolve(__dirname, 'models'));
+
+// 初始化express
+$.init.load(path.resolve(__dirname, 'init', 'express.js'));
+// 加载路由
+$.init.load(path.resolve(__dirname, 'routes'));
 
 // 初始化
 $.init((err) => {
