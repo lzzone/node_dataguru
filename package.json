@@ -1,0 +1,19 @@
+{
+  "name": "node_dataguru",
+  "version": "0.0.1",
+  "description": "炼数成金node课程练习代码",
+  "main": "run.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ghkk/node_dataguru.git"
+  },
+  "author": "hank guo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ghkk/node_dataguru/issues"
+  },
+  "homepage": "https://github.com/ghkk/node_dataguru#readme"
+}
