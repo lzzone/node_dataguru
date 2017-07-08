@@ -9,7 +9,8 @@ import path from 'path';
 import express from 'express';
 import serveStatic from 'serve-static';
 import bodyParser from 'body-parser';
-import multiparty from 'multiparty';
+import multiparty from 'connect-multiparty';
+import session from 'express-session';
 
 module.exports = function(done) {
 
@@ -20,12 +21,34 @@ module.exports = function(done) {
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(multiparty());
+    app.use(session({
+        secret: $.config.get('web.session.secret'),
+    }));
 
     const router = express.Router();
-    $.router = router;
+
+    const routerWarp = {};
+    ['get', 'head', 'post', 'put', 'del', 'deleta'].forEach(method => {
+        routerWarp[method] = function(path, ...fnList) {
+            fnList = fnList.map(fn => {
+                return function(req, res, next) {
+                    const ret = fn(req, res, next);
+                    if (ret.catch) ret.catch(next);
+                };
+            });
+            router[method](path, ...fnList);
+        };
+    });
+    $.router = routerWarp;
 
     app.use(router);
     app.use('/static', serveStatic(path.resolve(__dirname, '../../static')));
+
+    app.use('/api', function(err, req, res, next) {
+        debug("API error: %s", err && err.stack || err);
+        res.json({ error: err.toString() });
+    });
 
     app.listen($.config.get('web.port'), (err) => {
         done(err);
