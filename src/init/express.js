@@ -42,6 +42,13 @@ module.exports = function(done) {
     });
     $.router = routerWarp;
 
+    app.use(function(req, res, next) {
+        res.apiSuccess = function(data) {
+            res.json({ success: true, result: data });
+        };
+        next();
+    });
+
     app.use(router);
     app.use('/static', serveStatic(path.resolve(__dirname, '../../static')));
 
