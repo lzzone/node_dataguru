@@ -19,7 +19,11 @@ module.exports = function(done) {
         createdAt: { type: Date, index: true },
         updatedAt: { type: Date, index: true },
         lastCommentedAt: { type: Date, index: true },
-        comments: [{ type: Date, index: true }],
+        comments: [{
+            authorId: Object,
+            content: Object,
+            createdAt: Date,
+        }],
     });
     $.mongodb.model('Topic', Topic);
     $.model.Topic = $.mongodb.model('Topic');

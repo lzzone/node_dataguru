@@ -29,7 +29,7 @@ module.exports = function(done) {
     const router = express.Router();
 
     const routerWarp = {};
-    ['get', 'head', 'post', 'put', 'del', 'deleta'].forEach(method => {
+    ['get', 'head', 'post', 'put', 'delete'].forEach(method => {
         routerWarp[method] = function(path, ...fnList) {
             fnList = fnList.map(fn => {
                 return function(req, res, next) {

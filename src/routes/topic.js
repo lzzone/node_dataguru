@@ -30,5 +30,40 @@ module.exports = function(done) {
         res.apiSuccess({ topic });
     });
 
+    $.router.post("/api/topic/item/:topic_id", $.checkTopicAuthor, async function(req, res, next) {
+        if ('tags' in req.body) {
+            req.body.tags = req.body.tags.split(",").map(v => v.trim()).filter(v => v);
+        }
+        req.body._id = req.params.topic_id;
+        await $.method("topic.update").call(req.body);
+        const topic = await $.method("topic.get").call({ _id: req.params.topic_id });
+        res.apiSuccess({ topic });
+    });
+
+    $.router.delete("/api/topic/item/:topic_id", $.checkTopicAuthor, async function(req, res, next) {
+        const topic = await $.method("topic.delete").call({ _id: req.params.topic_id });
+        res.apiSuccess({ topic });
+    });
+
+    $.router.post("/api/topic/item/:topic_id/comment/add", $.checkTopicAuthor, async function(req, res, next) {
+        req.body._id = req.params.topic_id;
+        req.body.authorId = req.session.user._id;
+        const comment = await $.method("topic.comment.add").call(req.body);
+        res.apiSuccess({ comment });
+    });
+
+    $.router.delete("/api/topic/item/:topic_id/comment/delete", $.checkTopicAuthor, async function(req, res, next) {
+        req.body._id = req.params.topic_id;
+        req.body.authorId = req.session.user._id;
+
+        const comment = await $.method('topic.comment.get').call({
+            _id: params._id,
+            'comments.cid': params.cid
+        });
+
+        // const comment = await $.method("topic.comment.delete").call({ _id: req.params.topic_id });
+        res.apiSuccess({ comment });
+    });
+
     done();
 };

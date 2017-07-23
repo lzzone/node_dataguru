@@ -10,7 +10,7 @@ import validator from 'validator';
 module.exports = function(done) {
 
     $.method("topic.add").check({
-        authorId: { required: true, validate: (v) => validator.isMongoId(v) },
+        authorId: { required: true, validate: (v) => validator.isMongoId(String(v)) },
         title: { required: true },
         content: { required: true },
         tags: { validate: (v) => Array.isArray(v) },
@@ -23,14 +23,14 @@ module.exports = function(done) {
     });
 
     $.method("topic.get").check({
-        _id: { required: true, validate: (v) => validator.isMongoId(v) },
+        _id: { required: true, validate: (v) => validator.isMongoId(String(v)) },
     });
     $.method("topic.get").register(async function(params) {
         return $.model.Topic.findOne({ _id: params._id });
     });
 
     $.method("topic.list").check({
-        authorId: { validate: (v) => validator.isMongoId(v) },
+        authorId: { validate: (v) => validator.isMongoId(String(v)) },
         tags: { validate: (v) => Array.isArray(v) },
         skip: { validate: (v) => v >= 0 },
         limit: { validate: (v) => v > 0 },
@@ -51,6 +51,70 @@ module.exports = function(done) {
         if (params.skip) ret.skip(params.skip);
         if (params.limit) ret.limit(params.limit);
         return ret;
+    });
+
+    $.method("topic.delete").check({
+        _id: { required: true, validate: (v) => validator.isMongoId(String(v)) },
+    });
+    $.method("topic.delete").register(async function(params) {
+        return $.model.Topic.remove({ _id: params._id });
+    });
+
+    $.method("topic.update").check({
+        _id: { required: true, validate: (v) => validator.isMongoId(String(v)) },
+        tags: { validate: (v) => Array.isArray(v) },
+    });
+    $.method("topic.update").register(async function(params) {
+        const update = { updateAt: new Date() };
+        if (params.title) update.title = params.title;
+        if (params.content) update.title = params.content;
+        if (params.tags) update.title = params.tags;
+        return $.model.Topic.update({ _id: params._id }, { $set: update });
+    });
+
+    $.method("topic.comment.add").check({
+        _id: { required: true, validate: (v) => validator.isMongoId(String(v)) },
+        authorId: { required: true, validate: (v) => validator.isMongoId(String(v)) },
+        content: { required: true },
+    });
+    $.method("topic.comment.add").register(async function(params) {
+        const comment = {
+            authorId: params.authorId,
+            content: params.comment,
+            createdAt: new Date(),
+        };
+        return $.model.Topic.update({ _id: params._id }, {
+            $push: {
+                comments: comment
+            }
+        });
+    });
+
+    $.method("topic.comment.get").check({
+        _id: { required: true, validate: (v) => validator.isMongoId(String(v)) },
+        cid: { required: true, validate: (v) => validator.isMongoId(String(v)) },
+    });
+    $.method("topic.comment.get").register(async function(params) {
+        return $.model.Topic.findOne({
+            _id: params._id,
+            'comments._id': params.cid
+        }, {
+            'comments.$': 1
+        });
+    });
+
+    $.method("topic.comment.delete").check({
+        _id: { required: true, validate: (v) => validator.isMongoId(String(v)) },
+        cid: { required: true, validate: (v) => validator.isMongoId(String(v)) },
+    });
+    $.method("topic.comment.delete").register(async function(params) {
+        return $.model.Topic.remove({ _id: params._id }, {
+            $pull: {
+                comments: {
+                    _id: params.cid,
+                }
+            }
+        });
     });
 
 
