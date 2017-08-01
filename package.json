@@ -8,7 +8,8 @@
         "watch": "npm run clean && babel src -d target --watch",
         "compile": "npm run clean && babel src -d target",
         "clean": "rm -Rf target",
-        "dev": "export NODE_ENV=dev && export DEBUG='my:*' && node target/server.js"
+        "dev": "export NODE_ENV=dev && export DEBUG='my:*' && nodemon target/server.js",
+        "fe:compile": "cd frontend && webpack --progress --colors"
     },
     "repository": {
         "type": "git",
@@ -22,18 +23,27 @@
     "homepage": "https://github.com/ghkk/node_dataguru#readme",
     "devDependencies": {
         "babel-cli": "^6.24.1",
+        "babel-preset-es2015": "^6.24.1",
         "babel-preset-es2015-node4": "^2.1.1",
+        "babel-preset-react": "^6.24.1",
         "babel-preset-stage-0": "^6.24.1",
+        "nodemon": "^1.11.0",
         "project-core": "^0.1.5"
     },
     "dependencies": {
+        "babel-loader": "^7.1.1",
         "body-parser": "^1.17.2",
+        "bootstrap-webpack": "0.0.6",
         "connect-multiparty": "^2.0.0",
+        "connect-redis": "^3.3.0",
         "debug": "^2.6.8",
         "express": "^4.15.3",
         "express-session": "^1.15.3",
+        "jquery": "^3.2.1",
         "mongoose": "^4.11.0",
+        "react": "^15.6.1",
         "serve-static": "^1.12.3",
-        "validator": "^7.2.0"
+        "validator": "^7.2.0",
+        "webpack": "^3.4.1"
     }
 }
