@@ -8,7 +8,7 @@
         "watch": "npm run clean && babel src -d target --watch",
         "compile": "npm run clean && babel src -d target",
         "clean": "rm -Rf target",
-        "dev": "export NODE_ENV=dev && export DEBUG='my:*' && nodemon target/server.js",
+        "dev": "export NODE_ENV=dev && export DEBUG='my:*' && cd target && nodemon server.js",
         "fe:compile": "cd frontend && webpack --progress --colors",
         "fe:watch": "cd frontend && webpack --progress --colors --watch",
         "fe:dev": "cd frontend && webpack-dev-server"
@@ -58,6 +58,7 @@
         "mongoose": "^4.11.0",
         "react": "^15.6.1",
         "react-dom": "^15.6.1",
+        "react-router": "^3.0.5",
         "serve-static": "^1.12.3",
         "validator": "^7.2.0",
         "webpack": "^3.4.1"
