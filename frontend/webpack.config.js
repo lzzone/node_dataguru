@@ -1,7 +1,12 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
-    entry: './entry.js',
+    entry: [
+        'webpack-dev-server/client?http://0.0.0.0:3000',
+        'webpack/hot/only-dev-server',
+        './entry.js',
+    ],
     output: {
         path: path.resolve(__dirname, 'build'),
         filename: 'bundle.js',
@@ -14,10 +19,15 @@ module.exports = {
             {
                 test: /\.jsx$|\.js$/,
                 exclude: /(node_modules|bower_components)/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['es2015', 'react'],
-                }
+                loaders: [
+                    'react-hot-loader',
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: ['es2015', 'react'],
+                        },
+                    },
+                ],
             },
             {
                 test: /\.(woff|woff2)$/,
@@ -48,9 +58,12 @@ module.exports = {
         stats: {
             colors: true
         },
-        // hot: true,
-        // proxy: {
-        //     '*': 'http://127.0.0.1:3001',
-        // }
+        hot: true,
+        proxy: {
+            '*': 'http://127.0.0.1:3001',
+        }
     },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+    ],
 };

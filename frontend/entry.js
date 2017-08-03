@@ -1,17 +1,12 @@
 import 'bootstrap-webpack';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from '../App';
 
-console.log('hello, world');
+import {getTopicList} from './lib/client';
 
-class App extends React.Component {
-    render() {
-        return (
-            <div>
-                <h1>Hello</h1>
-            </div>
-        );
-    }
-}
+getTopicList({})
+    .then(ret => console.log(ret))
+    .catch(err => console.error(err))
 
 ReactDOM.render(<App />, document.body);
