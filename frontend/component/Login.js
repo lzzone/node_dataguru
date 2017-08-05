@@ -10,7 +10,6 @@ export default class Login extends React.Component {
     }
 
     handleChange(name,e){
-        console.log(name, e.target.value);
         this.state[name] = e.target.value;
     }
 

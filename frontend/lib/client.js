@@ -47,13 +47,13 @@ export function logout() {
     return request('post', 'logout');
 }
 
-export function signup(options) {
-    return request('post', 'signup', options).then(ret => ret.topic);
+export function signup(name, password) {
+    return request('post', 'signup', {name, password});
 }
 
 // topic
-export function addTopic(options) {
-    return request('post', 'topic/add', options).then(ret => ret.topic);
+export function addTopic(title, content, tags) {
+    return request('post', 'topic/add', {title, content, tags}).then(ret => ret.topic);
 }
 
 export function getTopicList(options) {
