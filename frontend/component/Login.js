@@ -1,6 +1,7 @@
 import React from 'react';
 import jQuery from 'jquery';
 import {login} from '../lib/client';
+import {redirectURL} from '../lib/utils';
 
 export default class Login extends React.Component {
 
@@ -20,7 +21,7 @@ export default class Login extends React.Component {
             .then(ret =>{
                 $btn.text('登录');
                 alert('登陆成功');
-                location.replace('/');
+                redirectURL('/');
             })
             .catch(err =>{
                 $btn.text('登录');
