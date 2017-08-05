@@ -1,13 +1,17 @@
 import React from 'react';
 import "highlight.js/styles/github-gist.css";
 import {getTopicDetail} from '../lib/client';
-import {renderMarkdown} from '../lib/utils';
+import {renderMarkdown,redirectURL} from '../lib/utils';
 
 export default class TopicDetail extends React.Component {
 
     constructor(props){
         super(props);
         this.state ={};
+    }
+
+    handleEdite(e){
+        redirectURL(`/topic/${this.state.topic._id}/edit`);
     }
 
     componentDidMount(){
@@ -29,10 +33,11 @@ export default class TopicDetail extends React.Component {
             <div>
                 <h2>{topic.title}</h2>
                 <section dangerouslySetInnerHTML={{__html:topic.html}}></section>
+                <button type="button" className="btn btn-primary" onClick={this.handleEdite.bind(this)}>编辑</button>
                 <ul className="list-group">
                     {topic.comments.map((item,i) => {
                         return (
-                            <li className="list-group-item">
+                            <li className="list-group-item" key={i}>
                                 {item.authorId}于{item.createAt}说：<br />{item.content}
                             </li>
                         )

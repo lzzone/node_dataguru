@@ -67,8 +67,8 @@ module.exports = function(done) {
     $.method("topic.update").register(async function(params) {
         const update = { updateAt: new Date() };
         if (params.title) update.title = params.title;
-        if (params.content) update.title = params.content;
-        if (params.tags) update.title = params.tags;
+        if (params.content) update.content = params.content;
+        if (params.tags) update.tags = params.tags;
         return $.model.Topic.update({ _id: params._id }, { $set: update });
     });
 

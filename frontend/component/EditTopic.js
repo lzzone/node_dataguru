@@ -1,9 +1,9 @@
 import React from 'react';
 import jQuery from 'jquery';
-import {addTopic} from '../lib/client';
-import {redirectURL} from '../lib/utils';
+import {editeTopic,getTopicDetail} from '../lib/client';
+import {redirectURL,renderMarkdown} from '../lib/utils';
 
-export default class NewTopic extends React.Component {
+export default class EditTopic extends React.Component {
 
     constructor(props){
         super(props);
@@ -15,14 +15,24 @@ export default class NewTopic extends React.Component {
     }
 
     handleSubmit(e) {
-        const $btn = jQuery(e.target);
-        addTopic(this.state.title, this.state.content, this.state.tags)
+        editeTopic(this.state.topic._id, this.state.title, this.state.content, this.state.tags)
             .then(ret =>{
-                redirectURL(`topic/${ret._id}`);
+                redirectURL(`/topic/${ret._id}`);
             })
             .catch(err =>{
                 alert(err);
             })
+    }
+
+    componentDidMount(){
+        getTopicDetail(this.props.params.id)
+            .then(topic => {
+                topic.html = renderMarkdown(topic.content);
+                this.setState({topic});
+                jQuery('#ipt-title').val(topic.title);
+                jQuery('#ipt-tags').val(topic.tags);
+                jQuery('#ipt-content').val(topic.content);
+            }).catch(err => console.log(err));
     }
 
     render() {
@@ -30,7 +40,7 @@ export default class NewTopic extends React.Component {
             <div className="panel panel-primary">
                 <div className="panel-heading">
                     <h3 className="panel-title">
-                        发表新主题
+                        编辑主题
                     </h3>
                 </div>
                 <div className="panel-body">
@@ -54,7 +64,7 @@ export default class NewTopic extends React.Component {
                             </label>
                             <textarea className="form-control" id="ipt-content" rows="10" onChange={this.handleChange.bind(this, 'content')} placeholder="" />
                         </div>
-                        <button type="button" className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>保存</button>
+                        <button type="button" className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>更新</button>
                     </form>
                 </div>
             </div>

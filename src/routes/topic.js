@@ -55,12 +55,6 @@ module.exports = function(done) {
     $.router.delete("/api/topic/item/:topic_id/comment/delete", $.checkTopicAuthor, async function(req, res, next) {
         req.body._id = req.params.topic_id;
         req.body.authorId = req.session.user._id;
-
-        // const comment = await $.method('topic.comment.get').call({
-        //     _id: params._id,
-        //     'comments.cid': params.cid
-        // });
-
         const comment = await $.method("topic.comment.delete").call({ _id: req.params.topic_id });
         res.apiSuccess({ comment });
     });

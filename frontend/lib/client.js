@@ -64,8 +64,8 @@ export function getTopicDetail(id) {
     return request('get', `topic/item/${id}`).then(ret => ret.topic);
 }
 
-export function postTopicDetail(options) {
-    return request('post', `topic/item/${options.id}`, options);
+export function editeTopic(id, title, content, tags) {
+    return request('post', `topic/item/${id}`, {title, content, tags}).then(ret => ret.topic);
 }
 
 export function deleteTopicDetail(id) {
