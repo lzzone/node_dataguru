@@ -31,11 +31,7 @@ module.exports = function(done) {
     });
 
     $.router.post('/api/logout', async function(req, res, next) {
-
-        if (req.session.logout_token && req.session.logout_token !== req.body.token) {
-            return next(new Error('invalid token'));
-        }
-
+        
         delete req.session.user;
         delete req.session.logout_token;
 

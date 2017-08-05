@@ -35,16 +35,16 @@ export function request(method, path, data = {}) {
 }
 
 // login
-export function getLoginUser() {
-    return request('get', 'login_user').then(ret => ret.topic);
+export function loginUser() {
+    return request('get', 'login_user').then(ret => ret.user);
 }
 
-export function login(options) {
-    return request('post', 'login', options).then(ret => ret.topic);
+export function login(name, password) {
+    return request('post', 'login', {name,password});
 }
 
-export function logout(options) {
-    return request('post', 'logout', options).then(ret => ret.topic);
+export function logout() {
+    return request('post', 'logout');
 }
 
 export function signup(options) {
