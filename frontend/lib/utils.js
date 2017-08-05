@@ -1,5 +1,6 @@
 import marked from 'marked';
 import Highlight from 'highlight.js';
+import xss from 'xss';
 
 marked.setOptions({
     highlight: function (code) {
@@ -12,5 +13,5 @@ export function redirectURL(url) {
 }
 
 export function renderMarkdown(text) {
-    return marked(text);
+    return xss(marked(text));
 }
