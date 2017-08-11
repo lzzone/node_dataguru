@@ -35,8 +35,6 @@ module.exports = function(done) {
             req.body.tags = req.body.tags.split(",").map(v => v.trim()).filter(v => v);
         }
         req.body._id = req.params.topic_id;
-        console.log(req.body);
-        console.log(req.params);
         await $.method("topic.update").call(req.body);
         const topic = await $.method("topic.get").call({ _id: req.params.topic_id });
         res.apiSuccess({ topic });
