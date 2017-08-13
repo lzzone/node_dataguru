@@ -8,7 +8,7 @@ export default class NewTopic extends React.Component {
         return (
             <TopicEditor
                 title = "发表新主题"
-                topic = {null}
+                topic = {{title:' '}}
                 onSave = {(topic, done) => {
                     addTopic(topic.title, topic.content, topic.tags)
                         .then(ret =>{

@@ -1,14 +1,18 @@
 import React from 'react';
 import jQuery from 'jquery';
+import MarkdownEditor from './MarkdownEditor';
 
 export default class TopicEditor extends React.Component {
 
     constructor(props){
         super(props);
-        this.state = props.topic || {};
-        setTimeout(() => {
-            this.setState(this.props.topic)
-        },0.001);
+        this.state = props.topic;
+        this.interval = setInterval(() => {
+            if (!this.state.title){
+                this.setState(this.props.topic);
+            }
+            console.log(this.state.title);
+        },1);
     }
 
     handleChange(name,e){
@@ -22,11 +26,18 @@ export default class TopicEditor extends React.Component {
     }
 
     render() {
+        if (this.state.title){
+            window.clearInterval(this.interval);
+        }else{
+            return (
+                <h3>正在加载中...</h3>
+            )
+        }
         return (
             <div className="panel panel-primary">
                 <div className="panel-heading">
                     <h3 className="panel-title">
-                        {this.state.title}
+                        {this.props.title}
                     </h3>
                 </div>
                 <div className="panel-body">
@@ -48,7 +59,7 @@ export default class TopicEditor extends React.Component {
                             <label htmlFor="ipt-content">
                                 内容
                             </label>
-                            <textarea className="form-control" id="ipt-content" rows="10" value={this.state.content} onChange={this.handleChange.bind(this, 'content')} placeholder="" />
+                            <MarkdownEditor value={this.state.content} onChange={this.handleChange.bind(this, 'content')} />
                         </div>
                         <button type="button" className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>保存</button>
                     </form>
