@@ -72,10 +72,10 @@ export function deleteTopicDetail(id) {
     return request('delete', `topic/item/${id}`);
 }
 
-export function addComment(options) {
-    return request('get', `topic/item/${options.id}/comment/add`, options);
+export function addComment(id, content) {
+    return request('post', `topic/item/${id}/comment/add`, {content}).then(ret => ret.comment);
 }
 
-export function deleteComment(options) {
-    return request('get', `topic/item/${options.id}/comment/delete`, options);
+export function deleteComment(id, cid) {
+    return request('delete', `topic/item/${id}/comment/delete`, {cid});
 }

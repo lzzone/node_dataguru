@@ -80,7 +80,7 @@ module.exports = function(done) {
     $.method("topic.comment.add").register(async function(params) {
         const comment = {
             authorId: params.authorId,
-            content: params.comment,
+            content: params.content,
             createdAt: new Date(),
         };
         return $.model.Topic.update({ _id: params._id }, {
