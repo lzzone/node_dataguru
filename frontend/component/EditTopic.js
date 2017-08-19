@@ -29,7 +29,6 @@ export default class EditTopic extends React.Component {
                 title = {`编辑 ${this.state.topic.title}`}
                 topic = {this.state.topic}
                 onSave = {(topic, done) => {
-                    console.log({id:topic._id, title:topic.title,content: topic.content, tags:topic.tags});
                     updateTopic(topic._id, topic.title, topic.content, topic.tags)
                         .then(ret =>{
                             done();

@@ -108,7 +108,7 @@ module.exports = function(done) {
         cid: { required: true, validate: (v) => validator.isMongoId(String(v)) },
     });
     $.method("topic.comment.delete").register(async function(params) {
-        return $.model.Topic.remove({ _id: params._id }, {
+        return $.model.Topic.update({ _id: params._id }, {
             $pull: {
                 comments: {
                     _id: params.cid,
