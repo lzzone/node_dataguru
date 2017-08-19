@@ -20,7 +20,7 @@ module.exports = function(done) {
             const user = await $.method("user.get").call({ name: params.name });
             if (user) throw new Error(`user ${params.name} already exists`);
         } {
-            const user = await $.method("user.get").call({ name: params.email });
+            const user = await $.method("user.get").call({ email: params.email });
             if (user) throw new Error(`user ${params.email} already exists`);
         }
         params.password = $.utils.encryptPassword(params.password.toString());

@@ -40,7 +40,6 @@ module.exports = function(done) {
     });
 
     $.router.post('/api/signup', async function(req, res, next) {
-
         const user = await $.method('user.add').call(req.body);
 
         res.apiSuccess({ user: user });
