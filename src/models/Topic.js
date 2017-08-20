@@ -12,7 +12,7 @@ module.exports = function(done) {
     const Schema = mongoose.Schema;
     const ObjectId = Schema.ObjectId;
     const Topic = new Schema({
-        authorId: { type: Object, index: true },
+        author: { type: Object, index: true, ref: "User" },
         title: { type: String, trim: true },
         content: { type: String },
         tags: [{ type: String, index: true }],
@@ -20,7 +20,7 @@ module.exports = function(done) {
         updatedAt: { type: Date, index: true },
         lastCommentedAt: { type: Date, index: true },
         comments: [{
-            authorId: Object,
+            author: {type: Object, ref: 'User'},
             content: Object,
             createdAt: Date,
         }],

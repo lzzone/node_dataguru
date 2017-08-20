@@ -39,30 +39,31 @@ export default class TopicList extends React.Component {
         if (prePage < 1) prePage = 1;
         return (
             <div>
-            <div>
                 <ul className="list-group">
                     {list.map((item,i) => {
                         return (
-                            <Link to={`/topic/${item._id}`} className="list-group-item" key={i}>{item.title} by {item.authorId}</Link>
+                            <Link to={`/topic/${item._id}`} className="list-group-item" key={i}>
+                                {item.title}
+                                <span className="pull-right">{item.author.nickname} 发表于 {item.createdAt}</span>
+                            </Link>
                         )
                     })}
                 </ul>
-            </div>
 
-            <nav aria-label="Page navigation">
-                <ul className="pagination">
-                    <li>
-                        <Link to={`/?page=${prePage}`} aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to={`/?page=${nextPage}`} aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
+                <nav aria-label="Page navigation">
+                    <ul className="pagination">
+                        <li>
+                            <Link to={`/?page=${prePage}`} aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to={`/?page=${nextPage}`} aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </Link>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         );
     }
