@@ -33,7 +33,24 @@ module.exports = function(done) {
     $.router.get("/api/topic/item/:topic_id", async function(req, res, next) {
         const topic = await $.method("topic.get").call({ _id: req.params.topic_id });
         if (!topic) return next(new Error(`topic ${req.params.topic_id} does not exists`))
-        res.apiSuccess({ topic });
+        
+        const userId = req.session.user && req.session.user._id && req.session.user._id.toString();
+        const isAdmin = req.session.user && req.session.user.isAdmin;
+
+        const result = {};
+        result.topic = $.utils.cloneObject(topic);
+        result.topic.permission = {
+            edit: isAdmin || userId === result.topic.author._id,
+            delete: isAdmin || userId === result.topic.author._id,
+        };
+        result.topic.comments.forEach(item => {
+            item.permission = {
+                edit: isAdmin || userId === item.author._id,
+                delete: isAdmin || userId === item.author._id,
+            };
+        });
+
+        res.apiSuccess(result);
     });
 
     $.router.post("/api/topic/item/:topic_id", $.checkTopicAuthor, async function(req, res, next) {
@@ -65,11 +82,18 @@ module.exports = function(done) {
             cid: req.body.cid,
         }
         const comment = await $.method("topic.comment.get").call(query);
-        if (!(comment && comment.comments && comment.comments[0] &&
-                comment.comments[0].author.toString() === req.session.user._id.toString())) {
-            return next(new Error('access denied'));
+
+        if (comment && comment.comments && comment.comments[0]){
+            const item = comment.comments[0];
+            if (req.session.user.isAdmin || item.author.toString() == req.session.user._id.toString()){
+                await $.method("topic.comment.delete").call(query);
+            }else{
+                return next(new Error('access denied'));
+            }
+        } else {
+            return next(new Error('comment does not exists'));
         }
-        await $.method("topic.comment.delete").call(query);
+
         res.apiSuccess({ comment: comment.comments[0]});
     });
 
