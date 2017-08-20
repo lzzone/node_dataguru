@@ -51,6 +51,10 @@ export function signup(name, email, password, nickname) {
     return request('post', 'signup', {name, email, password, nickname});
 }
 
+export function updateProfile(email, nickname, about) {
+    return request('post', 'user/profile', {email, nickname, about});
+}
+
 // topic
 export function addTopic(title, content, tags) {
     return request('post', 'topic/add', {title, content, tags}).then(ret => ret.topic);
