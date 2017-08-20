@@ -20,8 +20,14 @@ module.exports = function(done) {
         if ('tags' in req.query) {
             req.query.tags = req.query.tags.split(",").map(v => v.trim()).filter(v => v);
         }
+        let page = parseInt(req.query.page, 10);
+        if (!(page > 1)) page = 1;
+        req.query.limit = 10;
+        req.query.skip = (page - 1) * req.query.limit;
         const list = await $.method("topic.list").call(req.query);
-        res.apiSuccess({ list });
+        const count = await $.method("topic.count").call(req.query);
+        const pageSize = Math.ceil(count / req.query.limit);
+        res.apiSuccess({ count, page, pageSize, list });
     });
 
     $.router.get("/api/topic/item/:topic_id", async function(req, res, next) {

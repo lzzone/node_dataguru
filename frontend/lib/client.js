@@ -57,7 +57,7 @@ export function addTopic(title, content, tags) {
 }
 
 export function getTopicList(options) {
-    return request('get', 'topic/list');
+    return request('get', 'topic/list', options);
 }
 
 export function getTopicDetail(id) {
